@@ -42,3 +42,15 @@ release:
 
 shell:
 	docker run -t -i --rm $(NAME):$(VERSION) bash
+
+miniconda:
+	docker run -d \
+		-v /opt/anaconda \
+		--name miniconda \
+		tswicegood/miniconda sleep 1000
+
+        
+
+test:
+	docker run -i --link logstash:logstash --volumes-from miniconda -t ubuntu /bin/bash
+    

@@ -11,7 +11,7 @@ LOGSTASH_CONFIG_FILE="/opt/logstash.conf"
 # If you don't provide a value for the LOGSTASH_CONFIG_URL env
 # var, your install will default to our very basic logstash.conf file.
 if [ -z "${LOGSTASH_CONFIG_URL}" ]; then
-    LOGSTASH_CONFIG_URL="https://gist.github.com/pblittle/8778567/raw/logstash.conf"
+    LOGSTASH_CONFIG_URL="https://raw.githubusercontent.com/ContinuumIO/docker-logstash/master/conf/logstash.conf"
 fi
 
 wget $LOGSTASH_CONFIG_URL -O $LOGSTASH_CONFIG_FILE
