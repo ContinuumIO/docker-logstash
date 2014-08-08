@@ -7,10 +7,14 @@ The Makefile has tests and the default configuration file only does remote syslo
 1. make build
 1. make build_test  # Create the test container
 1. make test    # This will start logstash and the test container
+1. Wait a few minutes for logstash to actually start working.  Check the web interface until you can see 0 messages.  Elastic search takes a while to initializae and run even if the UI is working.
 1. Run the python script:  python remote_logging.py
 1. Check web interface for log messages: http://localhost:9292 or Boot2Docker:  http://192.168.59.103:9292/index.html#/dashboard/file/guided.json
-1. make clean_test   # This cleans up the docker containers and removes them
+1. make clean_test   # This will kill the logstash container
 
+
+
+# Upstream Comments below
 
 
 This is a logstash (1.4.2) image that is configurable to run using either the embedded elasticsearch or an elasticsearch node running in a separate container.

@@ -29,5 +29,9 @@ EXPOSE 9292
 # Syslog
 EXPOSE 514
 
+# Default logstash config
+ADD conf/logstash.conf /opt/logstash.conf.default
+#ADD conf/logstash.conf /opt/logstash.conf
+
 # Start logstash
 ENTRYPOINT ["/app/bin/boot"]

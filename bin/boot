@@ -3,18 +3,35 @@
 set -e
 set -x
 
+# There are 2 ways to push a config file to logstash
+#  - Specify LOGSTASH_CONFIG_URL
+#  - Cmd-line mount the logstash config file to $LOGSTASH_CONFIG_FILE (-v <file>:<path>)
+
 # Use the LOGSTASH_CONFIG_URL env var to download and use your
 # logstash.conf file.
 LOGSTASH_CONFIG_URL=${LOGSTASH_CONFIG_URL:-}
 LOGSTASH_CONFIG_FILE="/opt/logstash.conf"
+LOGSTASH_DEFAULT_CONFIG_FILE="/opt/logstash.conf.default"
+LOGSTASH_MOUNTED_CONFIG_FILE="/opt/mounted/logstash.conf"
 
-# If you don't provide a value for the LOGSTASH_CONFIG_URL env
-# var, your install will default to our very basic logstash.conf file.
-if [ -z "${LOGSTASH_CONFIG_URL}" ]; then
-    LOGSTASH_CONFIG_URL="https://raw.githubusercontent.com/ContinuumIO/docker-logstash/master/conf/logstash.conf"
+# If you provide a value for the LOGSTASH_CONFIG_URL env
+# var, you will override the default config
+#if [ ! -z "${LOGSTASH_CONFIG_URL}" ]; then
+#    #LOGSTASH_CONFIG_URL="https://raw.githubusercontent.com/ContinuumIO/docker-logstash/master/conf/logstash.conf"
+#    wget $LOGSTASH_CONFIG_URL -O $LOGSTASH_CONFIG_FILE || exit 40
+#fi
+
+if [ -e "${LOGSTASH_MOUNTED_CONFIG_FILE}" ]; then
+    cp ${LOGSTASH_MOUNTED_CONFIG_FILE} ${LOGSTASH_CONFIG_FILE} || exit 45
+else
+    touch /opt/no_mounted_file
 fi
 
-wget $LOGSTASH_CONFIG_URL -O $LOGSTASH_CONFIG_FILE
+# Use default config file if none are found
+if [ ! -e "${LOGSTASH_CONFIG_FILE}" ]; then
+    cp ${LOGSTASH_DEFAULT_CONFIG_FILE} ${LOGSTASH_CONFIG_FILE} || exit 50
+    #LOGSTASH_CONFIG_FILE=${LOGSTASH_DEFAULT_CONFIG_FILE}
+fi
 
 # This magic will replace ES_HOST and ES_PORT in your logstash.conf
 # file if they exist with the IP and port dynamically generated
