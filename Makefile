@@ -22,7 +22,7 @@ LF_SSL_CERT_URL ?= https://gist.github.com/pblittle/8994726/raw/insecure-logstas
 DIR := ${CURDIR}
 
 clean:
-    rm -f .build_test
+	rm -f .build_test
 
 build:
 	docker build --rm -t $(NAME):$(VERSION) .
