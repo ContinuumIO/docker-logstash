@@ -1,3 +1,18 @@
+# Continuum Updates
+
+The Makefile has tests and the default configuration file only does remote syslog on port 514 (no /var/log/* or stdin).
+
+## Getting Started 
+
+1. make build
+1. make build_test  # Create the test container
+1. make test    # This will start logstash and the test container
+1. Run the python script:  python remote_logging.py
+1. Check web interface for log messages: http://localhost:9292 or Boot2Docker:  http://192.168.59.103:9292/index.html#/dashboard/file/guided.json
+1. make clean_test   # This cleans up the docker containers and removes them
+
+
+
 This is a logstash (1.4.2) image that is configurable to run using either the embedded elasticsearch or an elasticsearch node running in a separate container.
 
 To fetch and start a container running logstash (1.4.2), elasticsearch (1.1.1) and Kibana 3 (3.0.1), simply:
