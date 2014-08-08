@@ -16,8 +16,19 @@ def main():
     logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.StreamHandler())
 
+
+    # use for testing the script locally
+    CONN = os.environ.get("LOGSTASH_PORT")
+    if CONN is None:
+        logger.critical("====== Couldn't find logstash container -- logging locally =========")
+        logger.critical("====== If you aren't testing locally, then this is an error ========")
+
+    # Test locally without using the Container
+    CONN=("tcp://localhost:514")
+    url = parse.urlsplit(CONN)
+
     # Docker linking sets up the ENV variable 
-    url = parse.urlsplit(os.environ.get("LOGSTASH_PORT")) # , "tcp://localhost:514")) # <-- use for testing the script locally
+    #url = parse.urlsplit(os.environ.get("LOGSTASH_PORT"))
 
     test_logger = logging.getLogger('logstash!')
     test_logger.setLevel(logging.DEBUG)
